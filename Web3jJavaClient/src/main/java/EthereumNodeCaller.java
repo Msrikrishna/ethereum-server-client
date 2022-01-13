@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 public class EthereumNodeCaller {
         Web3j myEthereumNode = Web3j.build(new HttpService("http://127.0.0.1:7545"));
         String DEFAULT_ADDRESS = "0x1De6d9d1b1134bB805ada6535478C51E3D5ea39F";
+        String CONTRACT_ADDRESS = "0xD5a7c8cC62b381596afE2859fe36a8eFA68360Fb";
 
         /*
           Retrieve the version and implementation of the Eth local BC
@@ -52,15 +53,6 @@ public class EthereumNodeCaller {
                 return result;
         }
 
-        public EthGetBalance getEthBalance() throws ExecutionException, InterruptedException {
-                EthGetBalance result = new EthGetBalance();
-                this.myEthereumNode.ethGetBalance(DEFAULT_ADDRESS,
-                                DefaultBlockParameter.valueOf("latest"))
-                        .sendAsync()
-                        .get();
-                return result;
-        }
-
         // Counter contract calls ------------------------------------
 
         public List getCounter() throws ExecutionException, InterruptedException {
@@ -79,7 +71,7 @@ public class EthereumNodeCaller {
 
                 EthCall response = myEthereumNode.ethCall(Transaction
                         .createFunctionCallTransaction(DEFAULT_ADDRESS,
-                                nonce, gasprice, gaslimit, "0xD5a7c8cC62b381596afE2859fe36a8eFA68360Fb", encodedFunction),
+                                nonce, gasprice, gaslimit, CONTRACT_ADDRESS, encodedFunction),
                                 DefaultBlockParameterName.LATEST)
                         .sendAsync().get();
 
@@ -106,7 +98,7 @@ public class EthereumNodeCaller {
                 BigInteger gaslimit = BigInteger.valueOf(4712388);
 
                 Transaction ts = Transaction.createFunctionCallTransaction(DEFAULT_ADDRESS,
-                                                nonce, gasprice, gaslimit, "0xD5a7c8cC62b381596afE2859fe36a8eFA68360Fb", encodedFunction);
+                                                nonce, gasprice, gaslimit, CONTRACT_ADDRESS, encodedFunction);
                 EthSendTransaction response = myEthereumNode.ethSendTransaction(ts).sendAsync().get();
                 return response.getTransactionHash();
         }
@@ -125,7 +117,7 @@ public class EthereumNodeCaller {
                 BigInteger gaslimit = BigInteger.valueOf(4712388);
 
                 Transaction ts = Transaction.createFunctionCallTransaction(DEFAULT_ADDRESS,
-                        nonce, gasprice, gaslimit, "0xD5a7c8cC62b381596afE2859fe36a8eFA68360Fb", encodedFunction);
+                        nonce, gasprice, gaslimit, CONTRACT_ADDRESS, encodedFunction);
                 EthSendTransaction response = myEthereumNode.ethSendTransaction(ts).sendAsync().get();
                 return response.getTransactionHash();
         }

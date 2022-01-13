@@ -10,6 +10,7 @@ import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -23,10 +24,18 @@ class EthereumNodeCallerTest {
     @BeforeEach
     void setUp() {
         api = new EthereumNodeCaller();
+
+        try {
+            api.DEFAULT_ADDRESS = api.getEthAccounts().getAccounts().get(0); //Select account on BC
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    void getEthAccounts() {
+    void getEthAccountsTest() {
         try {
            EthAccounts accounts = api.getEthAccounts();
            assertNotEquals(accounts, null);
@@ -37,7 +46,7 @@ class EthereumNodeCallerTest {
     }
 
     @Test
-    void getBlockNumber() {
+    void getBlockNumberTest() {
         try {
             EthBlockNumber blockNum = api.getBlockNumber();
             assertNotEquals(blockNum, null);
@@ -48,18 +57,7 @@ class EthereumNodeCallerTest {
     }
 
     @Test
-    void getEthBalance() {
-        try {
-            EthGetBalance bal = api.getEthBalance();
-            assertNotEquals(bal, null);
-            System.out.println(bal.getBalance());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    void getEthereumClientVersion() {
+    void getEthereumClientVersionTest() {
         try {
             String ethNodeVersion = api.getEthereumClientVersion();
             System.out.println(ethNodeVersion);
@@ -70,7 +68,7 @@ class EthereumNodeCallerTest {
     }
 //------------------------------------- Counter contract client side tests-------------------------
     @Test
-    void getCounter() {
+    void getCounterTest() {
         try {
             List<Uint> count = api.getCounter();
             assertNotEquals(count.get(0), null);
@@ -83,7 +81,7 @@ class EthereumNodeCallerTest {
     }
 
     @Test
-    void incrementCounter() {
+    void incrementCounterTest() {
         try {
             String transHash = api.incrementCounter();
             assertNotEquals(transHash, null);
@@ -97,7 +95,7 @@ class EthereumNodeCallerTest {
     }
 
     @Test
-    void decrementCounter() {
+    void decrementCounterTest() {
         try {
             String transHash = api.decrementCounter();
             assertNotEquals(transHash, null);

@@ -9,7 +9,7 @@ import java.security.NoSuchProviderException;
 class WalletTest {
 
     @Test
-    void createWallet() {
+    void createWalletTest() {
         String walletName = null;
         try {
             walletName = Wallet.createWallet();
